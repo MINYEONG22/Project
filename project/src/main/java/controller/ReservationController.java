@@ -67,8 +67,7 @@ public class ReservationController extends MskimRequestMapping{
 	}
 	
 	@RequestMapping("rewrite")
-	public String rewrite(HttpServletRequest request,
-			HttpServletResponse response) {
+	public String rewrite(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			request.setCharacterEncoding("UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -101,8 +100,7 @@ public class ReservationController extends MskimRequestMapping{
 	}
 	
 	@RequestMapping("commdel")
-	public String commdel(HttpServletRequest request,
-			HttpServletResponse response) {
+	public String commdel(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			request.setCharacterEncoding("UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -127,159 +125,193 @@ public class ReservationController extends MskimRequestMapping{
 		request.setAttribute("url", url);
 		return "alert";
 	}
-	   @RequestMapping("calendar")
-	   public String calendar(HttpServletRequest request, HttpServletResponse response) {
-	      int msno = Integer.parseInt(request.getParameter("msno"));
-	      String dmd = (String) request.getParameter("dmd");
-	      List<Day> callist = ddao.callist(dmd,msno);
-	      request.setAttribute("c", callist);
-	      return "reservation/calendar";
-	   }
-	   
-	   @RequestMapping("seatForm")
-	      public String seatForm(HttpServletRequest request,  HttpServletResponse response) {
-	         int msno = Integer.parseInt(request.getParameter("msno"));
-	         String dmd = request.getParameter("dmd");
-	         String time = request.getParameter("time");
-	
-	         // 해당 회차 시간 list
-	         List<Day> timelist = ddao.callist(dmd, msno);
-	         List<String> times = new ArrayList<>();
-	         for(Day t : timelist) {
-	        	 times.add(t.getTime1());
-	        	 times.add(t.getTime2());
-	        	 times.add(t.getTime3());
-	         }
-	       
-	         // 해당 좌석 list 가져와서 배열에 저장
-	         List<Reservation> selist = rdao.selist(msno,dmd,time);
-	         List<String> totse = new ArrayList<>();
-	         for(Reservation r : selist) {
-	        	 totse.add(r.getRseat1());
-	        	 totse.add(r.getRseat2());
-	        	 totse.add(r.getRseat3());
-	         }
-	       
-	        //해당 시간 list가져와서 배열에 저장
-	        List<Day> daylist = ddao.daylist(msno);
-	        List<String> totday = new ArrayList<>();
-	        for(Day d : daylist) {
-	        	totday.add(d.getDmd());
-	        }
-	        System.out.println("변경 times: "+times);
-	        request.setAttribute("timelist", times);
-	        request.setAttribute("daylist", totday);
-	    
-	         return "reservation/seatForm";
-	     }
-	   @RequestMapping("day")
-	      public String day(HttpServletRequest request,
-	            HttpServletResponse response) {
-		   int msno = Integer.parseInt(request.getParameter("msno"));
-		      String dmd = (String) request.getParameter("dmd");
-		      List<Day> callist = ddao.callist(dmd,msno);
-		      request.setAttribute("c", callist);
-		      System.out.println(callist);
-		      return "reservation/day";
-	   }
-	   @RequestMapping("seat")
-	      public String seat(HttpServletRequest request, HttpServletResponse response) {
-		   	 int msno = Integer.parseInt(request.getParameter("msno"));
-	         String dmd = request.getParameter("dmd");
-	         String time = request.getParameter("time");
-	         System.out.println("msno:"+msno+", dmd:"+dmd+", time"+time);
-	         // 해당 좌석 list 가져와서 배열에 저장
-	         List<Reservation> selist = rdao.selist(msno,dmd,time);
-	         List<String> totse = new ArrayList<>();
-	         for(Reservation r : selist) {
-	        	 totse.add(r.getRseat1());
-	        	 totse.add(r.getRseat2());
-	        	 totse.add(r.getRseat3());
-	         }
-	         System.out.println("totse======"+totse);
-	         request.setAttribute("totse", totse);
-	         return "reservation/seat";
-	   }
-	   @RequestMapping("paymentForm")
-	   public String paymentForm(HttpServletRequest request, HttpServletResponse response) {
-		   int msno = Integer.parseInt(request.getParameter("msno"));
-		   String dmd = request.getParameter("dmd");
-		   String time = request.getParameter("time");
-		   String seat = request.getParameter("reseat");
-		   System.out.println("msno: "+msno+", dmd: "+dmd+", time: "+time+", seat: "+seat);
-		   String sarr[] = seat.split(",");
 
-		   int sum =0;
-		   for(int i = 0; i<sarr.length; i++) {
-			   if(Integer.parseInt(sarr[i])<=5) {
-				   sum += 150000;
-			   } else if(Integer.parseInt(sarr[i])<=10) {
-				   sum += 130000;
-			   } else if(Integer.parseInt(sarr[i])<=15) {
-				   sum += 100000;
-			   } else if(Integer.parseInt(sarr[i])<=20) {
-				   sum += 70000;
-			   }
-		   
-		   }
-		   System.out.println(sum);
-		   int num = rdao.maxnum();
-		   System.out.println(num);
-		   request.setAttribute("dmd", dmd);
-		   request.setAttribute("time",time);
-		   request.setAttribute("seat", seat);
-		   request.setAttribute("sum", sum);
-		   request.setAttribute("num", num);
-	        return "reservation/paymentForm";
-	     }
+	@RequestMapping("calendar")
+	public String calendar(HttpServletRequest request, HttpServletResponse response) {
+		int msno = Integer.parseInt(request.getParameter("msno"));
+		String dmd = (String) request.getParameter("dmd");
+		List<Day> callist = ddao.callist(dmd, msno);
+		request.setAttribute("c", callist);
+		return "reservation/calendar";
+	}
 
-			@RequestMapping("payment")
-			public String payment(HttpServletRequest request, HttpServletResponse response) {
-				int msno = Integer.parseInt(request.getParameter("msno"));
-				String id = (String) request.getSession().getAttribute("login");
-				String title = request.getParameter("title");
-				String dmd = request.getParameter("dmd");
-				String time = request.getParameter("time");
-				String seat = request.getParameter("seat");
-				int sum = Integer.parseInt(request.getParameter("sum"));
-				String sarr[] = seat.split(",");
-				System.out.println(id);
-				Reservation r = new Reservation();
-				r.setId(id);
-				r.setRmtitle(title);
-				r.setRmsno(msno);
-				r.setRmd(dmd);
-				r.setRtime(time);
-				r.setRtprice(sum);
-				for (int i = 0; i < sarr.length; i++) {
-					if (i == 0) {
-						r.setRseat1(sarr[i]);
-					}
-					if (i == 1) {
-						r.setRseat2(sarr[i]);
-					}
-					if (i == 2) {
-						r.setRseat3(sarr[i]);
-					}
-				}
-				int point = dao.topoint(id);
-				if(point<sum) {
-					request.setAttribute("msg", "포인트가 부족합니다");
-					request.setAttribute("url", "../member/main");
-				}else {
-					if(rdao.insert(r)) {
-						if(dao.pointadd(id, -sum)) {
-							request.setAttribute("msg", "예매 완료"+sum+"포인트 차감");
-							request.setAttribute("url", "../member/main");
-						}else {
-							request.setAttribute("msg", "예매 완료 포인트 차감 안됌");
-							request.setAttribute("url", "../member/main");
-						}
-					}else {
-						request.setAttribute("msg", "예매 실패");
-						request.setAttribute("url", "reserInfoForm");
-					}
-				}
-				return "alert";
+	@RequestMapping("seatForm")
+	public String seatForm(HttpServletRequest request, HttpServletResponse response) {
+		int msno = 0;
+		try {
+			msno = Integer.parseInt(request.getParameter("msno"));
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
+		String dmd = request.getParameter("dmd");
+		String time = request.getParameter("time");
+		
+		// 파라미터 값 없을 때
+		if(request.getParameter("msno") == null ||dmd == null || time == null ||
+			msno == 0|| dmd.trim().equals("") || time.trim().equals("")) {
+			request.setAttribute("msg", "잘못 된 접근입니다.");
+			request.setAttribute("url", "reserInfoForm");
+			return "alert";
+		}
+		// loginUser만
+		String login = (String)request.getSession().getAttribute("login");
+		if(login == null) {
+			request.setAttribute("msg", "로그인이 필요한 서비스 입니다.");
+			request.setAttribute("url", "../member/loginForm");
+			return "alert";
+		}
+		
+		// 해당 회차 시간 list
+		List<Day> timelist = ddao.callist(dmd, msno);
+		List<String> times = new ArrayList<>();
+		for (Day t : timelist) {
+			times.add(t.getTime1());
+			times.add(t.getTime2());
+			times.add(t.getTime3());
+		}
+
+		// 해당 좌석 list 가져와서 배열에 저장
+		List<Reservation> selist = rdao.selist(msno, dmd, time);
+		List<String> totse = new ArrayList<>();
+		for (Reservation r : selist) {
+			totse.add(r.getRseat1());
+			totse.add(r.getRseat2());
+			totse.add(r.getRseat3());
+		}
+
+		// 해당 시간 list가져와서 배열에 저장
+		List<Day> daylist = ddao.daylist(msno);
+		List<String> totday = new ArrayList<>();
+		for (Day d : daylist) {
+			totday.add(d.getDmd());
+		}
+		System.out.println("변경 times: " + times);
+		request.setAttribute("timelist", times);
+		request.setAttribute("daylist", totday);
+		return "reservation/seatForm";
+	}
+
+	@RequestMapping("day")
+	public String day(HttpServletRequest request, HttpServletResponse response) {
+		int msno = Integer.parseInt(request.getParameter("msno"));
+		String dmd = (String) request.getParameter("dmd");
+		List<Day> callist = ddao.callist(dmd, msno);
+		request.setAttribute("c", callist);
+		System.out.println(callist);
+		return "reservation/day";
+	}
+
+	@RequestMapping("seat")
+	public String seat(HttpServletRequest request, HttpServletResponse response) {
+		int msno = Integer.parseInt(request.getParameter("msno"));
+		String dmd = request.getParameter("dmd");
+		String time = request.getParameter("time");
+		System.out.println("msno:" + msno + ", dmd:" + dmd + ", time" + time);
+		// 해당 좌석 list 가져와서 배열에 저장
+		List<Reservation> selist = rdao.selist(msno, dmd, time);
+		List<String> totse = new ArrayList<>();
+		for (Reservation r : selist) {
+			totse.add(r.getRseat1());
+			totse.add(r.getRseat2());
+			totse.add(r.getRseat3());
+		}
+		System.out.println("totse======" + totse);
+		request.setAttribute("totse", totse);
+		return "reservation/seat";
+	}
+
+	@RequestMapping("paymentForm")
+	public String paymentForm(HttpServletRequest request, HttpServletResponse response) {
+		int msno = Integer.parseInt(request.getParameter("msno"));
+		String dmd = request.getParameter("dmd");
+		String time = request.getParameter("time");
+		String seat = request.getParameter("reseat");
+		String sarr[] = seat.split(",");
+		
+		// 파라미터 값 없을 때
+		if(request.getParameter("msno") == null ||dmd == null || time == null || seat == null ||
+			msno == 0|| dmd.trim().equals("") || time.trim().equals("")) {
+			request.setAttribute("msg", "잘못 된 접근입니다.");
+			request.setAttribute("url", "reserInfoForm");
+			return "alert";
+		}
+		// loginUser만
+		String login = (String)request.getSession().getAttribute("login");
+		if(login == null) {
+			request.setAttribute("msg", "로그인이 필요한 서비스 입니다.");
+			request.setAttribute("url", "../member/loginForm");
+			return "alert";
+		}
+		int sum = 0;
+		for (int i = 0; i < sarr.length; i++) {
+			if (Integer.parseInt(sarr[i]) <= 5) {
+				sum += 150000;
+			} else if (Integer.parseInt(sarr[i]) <= 10) {
+				sum += 130000;
+			} else if (Integer.parseInt(sarr[i]) <= 15) {
+				sum += 100000;
+			} else if (Integer.parseInt(sarr[i]) <= 20) {
+				sum += 70000;
 			}
+		}
+		System.out.println(sum);
+		int num = rdao.maxnum();
+		System.out.println(num);
+		request.setAttribute("dmd", dmd);
+		request.setAttribute("time", time);
+		request.setAttribute("seat", seat);
+		request.setAttribute("sum", sum);
+		request.setAttribute("num", num);
+		return "reservation/paymentForm";
+	}
+
+	@RequestMapping("payment")
+	public String payment(HttpServletRequest request, HttpServletResponse response) {
+		int msno = Integer.parseInt(request.getParameter("msno"));
+		String id = (String) request.getSession().getAttribute("login");
+		String title = request.getParameter("title");
+		String dmd = request.getParameter("dmd");
+		String time = request.getParameter("time");
+		String seat = request.getParameter("seat");
+		int sum = Integer.parseInt(request.getParameter("sum"));
+		String sarr[] = seat.split(",");
+		System.out.println(id);
+		Reservation r = new Reservation();
+		r.setId(id);
+		r.setRmtitle(title);
+		r.setRmsno(msno);
+		r.setRmd(dmd);
+		r.setRtime(time);
+		r.setRtprice(sum);
+		for (int i = 0; i < sarr.length; i++) {
+			if (i == 0) {
+				r.setRseat1(sarr[i]);
+			}
+			if (i == 1) {
+				r.setRseat2(sarr[i]);
+			}
+			if (i == 2) {
+				r.setRseat3(sarr[i]);
+			}
+		}
+		int point = dao.topoint(id);
+		if (point < sum) {
+			request.setAttribute("msg", "포인트가 부족합니다");
+			request.setAttribute("url", "../member/main");
+		} else {
+			if (rdao.insert(r)) {
+				if (dao.pointadd(id, -sum)) {
+					request.setAttribute("msg", "예매 완료" + sum + "포인트 차감");
+					request.setAttribute("url", "../member/main");
+				} else {
+					request.setAttribute("msg", "예매 완료 포인트 차감 안됌");
+					request.setAttribute("url", "../member/main");
+				}
+			} else {
+				request.setAttribute("msg", "예매 실패");
+				request.setAttribute("url", "reserInfoForm");
+			}
+		}
+		return "alert";
+	}
 }
