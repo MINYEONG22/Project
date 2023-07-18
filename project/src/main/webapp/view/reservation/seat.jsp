@@ -9,7 +9,7 @@
       if (i%5==1) {%><tr><%} %>
 		<% List<String> totse = (List<String>)request.getAttribute("totse"); 
   	  if (totse.contains(i+"")) {%>   
-  			<td><button type="button" class="btn btn-dark"></button></td> 
+  			<td><button type="button" class="btn btn-dark" style="cursor:not-allowed"></button></td> 
  <%}  else {  
         if(i<=5) {%>
             <td><button type="button" class="btn btn-danger" value="<%=i %>"></button></td>

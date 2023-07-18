@@ -75,7 +75,8 @@
 				
 				<%-- 페이지 처리하기 --%>
 				<tr>
-					<td colspan="4" class="w3-center"><c:if test="${pageNum <= 1}">[이전]</c:if>
+					<td colspan="4" class="w3-center">
+					<c:if test="${pageNum <= 1}">[이전]</c:if>
 						<c:if test="${pageNum > 1}">
 							<a href="javascript:listsubmit(${pageNum-1})">[이전]</a>
 						</c:if> 
@@ -96,7 +97,6 @@
 		<a href="${path}/admin/muInsertForm" class="btn btn-dark" style="float:right; margin-top:15px">뮤지컬 등록</a>
 	</div>
 	<script type="text/javascript">
-	
 		function listsubmit(page) {
 			f = document.sf;  //검색 form 태그
 		    f.pageNum.value = page;

@@ -30,14 +30,17 @@ public interface DayMapper {
             + " where msno=#{msno} and dmd=#{chdmd}")
     int timeupdate(Map<String, Object> map);
 	
-	   @Select("select * from day where msno=${value} order by dmd")
-	   List<Day> tmlist(int msno);
+	@Select("select * from day where msno=${value} order by dmd")
+	List<Day> tmlist(int msno);
 
-	   @Select("select * from day where dmd=#{dmd} and msno=#{msno}")
-	   List<Day> callist(@Param("dmd")String dmd, @Param("msno") int msno);
+	@Select("select * from day where dmd=#{dmd} and msno=#{msno}")
+	List<Day> callist(@Param("dmd")String dmd, @Param("msno") int msno);
 	   
-	   @Select("select dmd from day where msno=${value} and dmd >= DATE_FORMAT(NOW(),'%Y-%m-%d')")
-	   List<Day> daylist(int msno);
+	@Select("select dmd from day where msno=${value} and dmd >= DATE_FORMAT(NOW(),'%Y-%m-%d')")
+	List<Day> daylist(int msno);
+
+	@Select("select * from day where msno=#{msno} order by dmd desc limit #{pn},#{limit}")
+	List<Day> tlist(@Param("msno")int msno, @Param("pn")int pageNum, @Param("limit")int limit);
 
 
 }

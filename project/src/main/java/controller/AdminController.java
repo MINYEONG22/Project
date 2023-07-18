@@ -312,11 +312,33 @@ public class AdminController extends MskimRequestMapping{
 	@MSLogin("loginAdminCheck")	
 	@RequestMapping("timeListForm")
 	public String timeListForm (HttpServletRequest request, HttpServletResponse response) {
+		int pageNum = 1;
+	    try {
+		   pageNum = Integer.parseInt(request.getParameter("pageNum"));
+	    } catch (NumberFormatException e) {}
+		int limit = 5;
 		int msno = Integer.parseInt(request.getParameter("msno"));
+		
+		System.out.println("pageNum"+pageNum);
+		
 		Musical m = dao.selectOne(msno);
 		request.setAttribute("m", m);
-		List<Day> timelist = ddao.timelist(msno); // model에 list 있음
-		request.setAttribute("timelist", timelist);
+	
+		List<Day> daylist = ddao.tlist(msno, pageNum, limit);
+		int timecount = dao.timeCount(msno);
+		int maxpage = (int)((double)timecount/limit + 0.95);
+		int startpage = ((int)(pageNum/10.0+0.9)-1)*10+1;
+		int endpage = startpage + 9;
+		if(endpage > maxpage) {
+			endpage = maxpage;
+		}
+		request.setAttribute("pageNum", pageNum);
+		request.setAttribute("startpage", startpage);
+		request.setAttribute("endpage", endpage);
+		request.setAttribute("maxpage", maxpage);
+		request.setAttribute("timecount", timecount);
+		request.setAttribute("msno", msno);
+		request.setAttribute("timelist", daylist);
 		return "admin/timeListForm";
 	}
 	

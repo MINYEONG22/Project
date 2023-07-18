@@ -131,5 +131,17 @@ public class MusicalMybatisDao {
 	      }
 	      return null;
 	   }
+
+	public int timeCount(int msno) {
+		SqlSession session = MybatisConnection.getConnection();
+		try {
+			return session.getMapper(cls).timeCount(msno);
+		} catch (Exception e) {
+			e.printStackTrace();
+	    } finally {
+	    	MybatisConnection.close(session);
+	    }
+		return 0;
+	}
 	
 }

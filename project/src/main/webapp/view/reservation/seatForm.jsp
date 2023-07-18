@@ -9,7 +9,6 @@
 <meta charset="UTF-8">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <title>좌석 선택하기</title>
-
 </head>
 <body>
 <form action="paymentForm" method="post" name="pf">
@@ -224,12 +223,10 @@
 			type: "GET",
 			data: "dmd="+dmd+"&msno="+msno+"&time="+time,
 			success : function(result) {
-				console.log("성공")
-				var option_time = $("select[name=time]").html(result).find('#chgti>option');
+				let option_time = $("select[name=time]").html(result).find('#chgti>option');
 				$("#chgti").html(option_time);
-				
 				let time = $("#chgti option:selected").val();
-				ajax(dmd, msno, time)
+				ajax(dmd, msno, time)	// 좌석 ajax 함수
 			}
 		})
 	}
@@ -257,12 +254,15 @@
 		$(".btn").click(function(){
 			let cnt;
 			let seatNum = $(this).val();
-		
-			if(i < pcnt) {
-			
+			if($(this).hasClass("btn-dark") == true) {
+				$(this).off("click");
+			}
+			if(i < pcnt) {	// i: 클릭값
 				$("#submitBtn").attr("disabled",false);
-				
-				if(seatNum <= 5) {
+				if($(this).hasClass("btn-dark") == true) {
+					$(this).off("click");
+					$("#submitBtn").attr("disabled",true);
+				} else if (seatNum <= 5) {
 					if($(this).hasClass("btn-danger")== true) {
 						$(this).removeClass();
 						$(this).addClass("btn btn-secondary");

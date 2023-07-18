@@ -11,13 +11,8 @@
 </head>
 <body>
 	<div class="w3-content w3-padding-64">
-		<div style="display:flex; justify-content: space-between;">
+		<div style="display:flex; justify-content: space-between; padding-bottom:15px">
 			<b style="font-size:18px">'${m.mtitle}'&emsp;상영 회차 정보</b>
-			<div style="width:30%; display:flex; margin-bottom: 10px;">
-				<input type="text" placeholder="search"  class="form-control" 
-				style="padding:5px 10px; border: 1px solid #333; width:90%">
-				<button type="button" class="btn btn-dark"><i class="fa fa-search"></i></button>
-			</div>
 		</div>
 		<div class="w3-center" style="border: 1px solid #333; border-radius: 10px; padding: 10px;">
 			<table class="w3-table">
@@ -50,22 +45,33 @@
 					<td colspan="6" class="w3-center">
 						<c:if test="${pageNum <= 1}">[이전]</c:if>
 						<c:if test="${pageNum > 1}">
-							<a href="list?pageNum=${pageNum}">[이전]</a>
+							<a href="javascript:listsubmit(${pageNum-1})">[이전]</a>
 						</c:if> 
 						<c:forEach var="a" begin="${startpage}" end="${endpage}">
 							<c:if test="${a == pageNum}">[${a}]</c:if>
 							<c:if test="${a != pageNum}">
-									<a href="list?pageNum=${a}">[${a}]</a>
+								<a href="javascript:listsubmit(${a})">[${a}]</a>
 							</c:if>
 						</c:forEach> 
 						<c:if test="${pageNum >= maxpage}">[다음]</c:if>
 						<c:if test="${pageNum < maxpage}">
-								<a href="list?pageNum=${pageNum + 1}">[다음]</a>
+								<a href="javascript:listsubmit(${pageNum+1})">[다음]</a>
 						</c:if>
 					</td>
 				</tr>
 			</table>
+			<form action="timeListForm" method="post" name="tf">
+	         	<input type="hidden" name="pageNum" value="1">
+	         	<input type="hidden" name="msno" value="${m.msno}">
+     		</form>
 		</div>
 	</div>
+	<script type="text/javascript">
+    function listsubmit(page) {
+       f = document.tf;  //검색 form 태그
+       f.pageNum.value = page;
+       f.submit();
+    }
+</script>  
 </body>
 </html>

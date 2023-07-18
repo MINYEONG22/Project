@@ -20,8 +20,8 @@ import model.MusicalMybatisDao;
 @WebFilter("/*")
 public class SiteMeshFilter extends ConfigurableSiteMeshFilter{
 	@Override
-	   public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
-	         throws IOException, ServletException {
+	   public void doFilter(ServletRequest request, ServletResponse response, 
+			   FilterChain filterChain) throws IOException, ServletException {
 		  try{
 			  request.setCharacterEncoding("UTF-8");
 		  }catch(UnsupportedEncodingException e) {
@@ -32,6 +32,7 @@ public class SiteMeshFilter extends ConfigurableSiteMeshFilter{
 	      request.setAttribute("mainlist", mainlist);
 	      super.doFilter(request, response, filterChain);
 	   }
+	
 	@Override
 	public void applyCustomConfiguration(SiteMeshFilterBuilder builder){
 		builder.addDecoratorPath("/member/*", "/layout/publiclayout.jsp");

@@ -45,6 +45,9 @@ public interface MusicalMapper {
 
 	@Select("SELECT * from musical order by mdate")
 	List<Musical> mainmulist();
+
+	@Select("select count(*) from day where msno=${value}")
+	int timeCount(int msno);
 	
 	
 

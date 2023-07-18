@@ -121,4 +121,17 @@ public class DayMybatisDao {
 		      }
 		      return null;
 		   }
+
+	public List<Day> tlist(int msno, int pageNum, int limit) {
+		SqlSession session = MybatisConnection.getConnection();
+		try {
+			pageNum = (pageNum -1) * limit;
+			return session.getMapper(cls).tlist(msno,pageNum,limit);
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			MybatisConnection.close(session);
+		}
+		return null;
+	}
 }
