@@ -164,7 +164,7 @@ public class UserController {
 		Integer rest = 1;
 		
 		service.insertUser(id, passwordHash(pass), name, gender, tel, email, lastlog, birth, rest);
-		return mav;
+		throw new LoginException("회원 가입되었습니다.", "login");
 	}
 	
 	@RequestMapping(value="joinCheck", produces="text/plain; charset=utf-8")
