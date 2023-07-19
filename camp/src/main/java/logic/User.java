@@ -23,7 +23,7 @@ public class User {
 	@Pattern(regexp="^[a-zA-Z0-9]*$", message="아이디는 영어와 숫자만 가능합니다.")
 	@NotEmpty(message="아이디를 입력하세요")
 	private String id;
-//	@Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$", message="비밀번호는 영어, 숫자, 특수문자 !,@,#,$,%,^,&,* 가 포함 된 8~16자리 비밀번호여야합니다.")
+	@Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$", message="비밀번호는 영어, 숫자, 특수문자 !,@,#,$,%,^,&,* 가 포함 된 8~16자리 비밀번호여야합니다.")
 	@Size(min=8,max=16,message="비밀번호는 8자이상 16자이하로 입력하세요")
 	@NotEmpty(message="비밀번호를 입력하세요")
 	private String pass;

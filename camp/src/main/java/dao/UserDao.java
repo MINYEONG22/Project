@@ -17,6 +17,7 @@ public class UserDao {
 	    private SqlSessionTemplate template;
 	    private Map<String, Object> param = new HashMap();
 	    private Class<UserMapper> cls = UserMapper.class;
+	    
 		public void insert(User user) {
 			template.getMapper(cls).insert(user);			
 		}
@@ -90,6 +91,33 @@ public class UserDao {
 
 		public List<User> idsearch(String email, String tel) {
 			return template.getMapper(cls).idsearch(email, tel);
+		}
+
+		public String selectUser(String paramid) {
+			param.clear();
+			param.put("id", paramid);
+			return template.getMapper(cls).userinto(param);
+		}
+
+		public String selectTel(String telCheck) {
+			param.clear();
+			param.put("tel", telCheck);
+			return template.getMapper(cls).usertel(param);
+		}
+
+		public void insertUser(String id, String passwordHash, String name, Integer gender, String tel, String email,
+				String lastlog, String birth, Integer rest) {
+			param.clear();
+			param.put("id", id);
+			param.put("pass", passwordHash);
+			param.put("name", name);
+			param.put("gender", gender);
+			param.put("tel", tel);
+			param.put("email", email);
+			param.put("lastlog", lastlog);
+			param.put("birth", birth);
+			param.put("rest", rest);
+			template.getMapper(cls).insertUser(param);
 		}
 
 

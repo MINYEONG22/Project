@@ -14,8 +14,8 @@ import logic.User;
 public interface UserMapper {
 
 	@Insert("insert into user(id,pass,name,gender,tel,email,lastlog, birth, rest)"
-			+ " values(#{id},#{pass},#{name},#{gender},#{tel},#{email}, now(), #{birth}, 1)")
-	void insert(User user);
+			+ " values(#{id},#{pass},#{name},#{gender},#{tel},#{email}, #{lastlog}, #{birth}, #{rest})")
+	void insertUser(Map<String, Object> param);
 
 	@Select("select * from user where id = #{value}")
 	User selectUserOne(String id);
@@ -64,5 +64,16 @@ public interface UserMapper {
 
 	@Select("select id from user where tel=#{tel} and email=#{email}")
 	List<User> idsearch(@Param("tel") String tel, @Param("email") String email);
+
+	@Select("select id from user where id=#{id}")
+	String userinto(Map<String, Object> param);
+
+	@Select("select tel from user where tel=#{tel}")
+	String usertel(Map<String, Object> param);
+	
+	
+	@Insert("insert into user(id,pass,name,gender,tel,email,lastlog, birth, rest)"
+			+ " values(#{id},#{pass},#{name},#{gender},#{tel},#{email}, now(), #{birth}, 1)")
+	void insert(User user);
 	
 }
