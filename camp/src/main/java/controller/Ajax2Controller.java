@@ -52,8 +52,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("ajax2")
 public class Ajax2Controller {
-	
-	@RequestMapping("select")
+	@RequestMapping(value="select", produces="text/plain; charset=utf-8")
 	public List<String> select(String si, String gu, HttpServletRequest request) {
 		BufferedReader fr = null;
 		String path = request.getServletContext().getRealPath("/")+"file/sido2.txt";
