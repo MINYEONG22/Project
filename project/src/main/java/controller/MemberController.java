@@ -437,8 +437,8 @@ public class MemberController extends MskimRequestMapping {
        String email = request.getParameter("email");
        String com = request.getParameter("com");
        System.out.println(email+com);
-       String sender = "ans4649";
-       String pass = "7dltmfql7!@";
+       String sender = "개인id";
+       String pass = "개인pass";
        String recipient = email+"@"+com;
        String title = "이메일 인증";
        int con1 = (int)(Math.random()*10);
