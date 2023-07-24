@@ -303,7 +303,7 @@ public class UserController {
 		
 		// json 형태의 문자열 데이터 => json 객체로 변경
 		JSONParser parser = new JSONParser();	// json-siple-1.1.1.jar 파일 설정 필요 -> pom.xml
-		JSONObject json = null;;
+		JSONObject json = null;
 		try {
 			json = (JSONObject)parser.parse(res.toString());
 		} catch (ParseException e) {
